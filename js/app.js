@@ -148,12 +148,4 @@ function sendChat() {
   });
 }
 
-
-  setTimeout(() => {
-    msgs.innerHTML += `<div class="msg bot">${reply}</div>`;
-    msgs.scrollTop = msgs.scrollHeight;
-  }, 400);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
 init();
