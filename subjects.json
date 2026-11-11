@@ -1,0 +1,13 @@
+{
+  "subjects": [
+    {
+      "id": "em1",
+      "name": "Engineering Mathematics-1",
+      "short": "EM-1",
+      "type": "Theory",
+      "icon": "∑",
+      "desc": "Calculus, Differential Equations, Matrices and Applications.",
+      "active": true
+    }
+  ]
+}
