@@ -12,12 +12,12 @@ window.renderSubject = function() {
     </header>
     <div class="container">
       <div class="tabs">
-        <div class="tab active" onclick="loadPDF('EM1_Notes.pdf', this)">Notes</div>
-        <div class="tab" onclick="loadPDF('EM1_Formulas.pdf', this)">Formulas</div>
-        <div class="tab" onclick="loadPDF('EM1_QB.pdf', this)">Question Bank</div>
+        <div class="tab active" onclick="loadPDF('EM1_SEE_Notes.pdf', this)">Notes</div>
+        <div class="tab" onclick="loadPDF('EM1_SEE_Formula.pdf', this)">Formulas</div>
+        <div class="tab" onclick="loadPDF('EM1_SEE_QB.pdf', this)">Question Bank</div>
       </div>
       <div id="tabContent" style="margin-top:1rem;">
-        <iframe id="pdfFrame" src="content/em1/EM1_Notes.pdf" width="100%" height="800px" style="border:1px solid #e2e8f0;border-radius:8px;"></iframe>
+        <iframe id="pdfFrame" src="content/em1/EM1_SEE_Notes.pdf" width="100%" height="800px" style="border:1px solid #e2e8f0;border-radius:8px;"></iframe>
       </div>
     </div>`;
 };
