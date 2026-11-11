@@ -1,7 +1,7 @@
 window.renderSubject = function() {
   // Load the interactive app
   const script = document.createElement('script');
-  script.src = 'js/em1-complete-interactive-app.js';
+  script.src = 'js/em1-complete-interactive-app-v2.js';
   script.onload = () => {
     document.getElementById('app').innerHTML = `
       <header>
