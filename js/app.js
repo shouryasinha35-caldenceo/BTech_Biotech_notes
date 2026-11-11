@@ -114,7 +114,6 @@ function toggleChat() {
   const p = document.getElementById('chatPanel');
   p.style.display = p.style.display === 'flex' ? 'none' : 'flex';
 }
-
 function sendChat() {
   const input = document.getElementById('chatInput');
   const text = (input.value || '').trim();
@@ -133,7 +132,7 @@ function sendChat() {
     body: JSON.stringify({
       contents: [{
         parts: [{
-          text: `You are a helpful study assistant for BTech Biotechnology students at IAR. Focus on Engineering Mathematics-1 topics (partial differentiation, series, Beta/Gamma, multiple integrals, differential equations). Answer clearly and concisely.\n\nQuestion: ${text}`
+          text: `You are a helpful study assistant for BTech Biotechnology students. Focus on Engineering Mathematics-1. Answer clearly.\n\nQuestion: ${text}`
         }]
       }]
     })
@@ -148,6 +147,7 @@ function sendChat() {
     document.getElementById('loading').outerHTML = `<div class="msg bot">Error connecting to AI. Try again later.</div>`;
   });
 }
+
 
   setTimeout(() => {
     msgs.innerHTML += `<div class="msg bot">${reply}</div>`;
