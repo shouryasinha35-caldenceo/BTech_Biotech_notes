@@ -122,25 +122,32 @@ function sendChat() {
   const msgs = document.getElementById('chatMessages');
   msgs.innerHTML += `<div class="msg user">${text}</div>`;
   input.value = '';
+  msgs.innerHTML += `<div class="msg bot" id="loading">Thinking...</div>`;
+  msgs.scrollTop = msgs.scrollHeight;
 
-  const lower = text.toLowerCase();
-  let reply = "Ask me about limits, partial derivatives, Euler’s theorem, chain rule, series, Beta/Gamma, or PYQs from Engineering Mathematics-1.";
+  const API_KEY = "AQ.Ab8RN6KXBcj8Fm1XIS1GmsIurie_JVPuwduRcwxKXqK8pGCs-Q";
 
-  if (lower.includes('limit') || lower.includes('lim')) {
-    reply = "For two-variable limits, the limit must be the same along every path. Classic example: lim (x,y)→(0,0) of xy/(x²+y²) does not exist (path test). Common PYQ: lim (x→5) (x-5)/(x²-25) = 1/10.";
-  } else if (lower.includes('partial') || lower.includes('fx') || lower.includes('fy')) {
-    reply = "Partial derivatives: treat the other variable as constant. Clairaut’s theorem says mixed partials are equal if continuous. Example: for f = x² + y² + x²y², fx = 2x + 2xy² and fy = 2y + 2x²y.";
-  } else if (lower.includes('euler')) {
-    reply = "Euler’s theorem: if u is homogeneous of degree n, then x·ux + y·uy = n·u. Check homogeneity by substituting (tx, ty) and seeing if you get tⁿ times the original function.";
-  } else if (lower.includes('chain') || lower.includes('total differential')) {
-    reply = "Chain rule: dz/dt = fx·dx/dt + fy·dy/dt. For constrained problems, find dy/dx from the constraint using implicit differentiation, then substitute.";
-  } else if (lower.includes('beta') || lower.includes('gamma')) {
-    reply = "Gamma: Γ(n+1) = nΓ(n), and Γ(1/2) = √π. Beta: B(m,n) = Γ(m)Γ(n)/Γ(m+n) and B(m,n) = B(n,m).";
-  } else if (lower.includes('series') || lower.includes('taylor') || lower.includes('maclaurin')) {
-    reply = "Maclaurin series for eˣ = 1 + x + x²/2! + x³/3! + ... . p-series 1/nᵖ converges when p > 1. Ratio test: look at |aₙ₊₁/aₙ|.";
-  } else if (lower.includes('pyq') || lower.includes('exam') || lower.includes('question')) {
-    reply = "High-yield topics: continuity parameter problems (A=3, B=5), factorization limits, partial derivatives of polynomials, and Euler’s theorem verification. Check the PYQs tab for years.";
-  }
+  fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      contents: [{
+        parts: [{
+          text: `You are a helpful study assistant for BTech Biotechnology students at IAR. Focus on Engineering Mathematics-1 topics (partial differentiation, series, Beta/Gamma, multiple integrals, differential equations). Answer clearly and concisely.\n\nQuestion: ${text}`
+        }]
+      }]
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't generate a response.";
+    document.getElementById('loading').outerHTML = `<div class="msg bot">${reply.replace(/\n/g, '<br>')}</div>`;
+    msgs.scrollTop = msgs.scrollHeight;
+  })
+  .catch(() => {
+    document.getElementById('loading').outerHTML = `<div class="msg bot">Error connecting to AI. Try again later.</div>`;
+  });
+}
 
   setTimeout(() => {
     msgs.innerHTML += `<div class="msg bot">${reply}</div>`;
