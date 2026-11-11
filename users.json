@@ -1,6 +1,0 @@
-{
-  "users": [
-    {"userid": "demo", "password": "demo123", "name": "Demo Student", "status": "active"},
-    {"userid": "shourya", "password": "calden2026", "name": "Shourya Sinha", "status": "active"}
-  ]
-}
