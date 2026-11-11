@@ -1,3 +1,4 @@
+// Calden Biotech Study Portal - Main App
 let currentUser = null;
 let subjects = [];
 let users = [];
@@ -8,13 +9,19 @@ async function init() {
       fetch('data/users.json'),
       fetch('data/subjects.json')
     ]);
-    users = (await uRes.json()).users;
-    subjects = (await sRes.json()).subjects;
+    users = (await uRes.json()).users || [];
+    subjects = (await sRes.json()).subjects || [];
   } catch (e) {
-    users = [{userid:'demo',password:'demo123',name:'Demo',status:'active'}];
-    subjects = [{id:'em1',name:'Engineering Mathematics-1',type:'Theory',icon:'∑',desc:'Calculus & DE',active:true}];
+    console.warn('Using fallback data');
+    users = [{userid:'demo',password:'demo123',name:'Demo Student',status:'active'}];
+    subjects = [{id:'em1',name:'Engineering Mathematics-1',type:'Theory',icon:'∑',desc:'Calculus & Differential Equations',active:true}];
   }
-  renderLogin();
+  if (localStorage.getItem('caldenUser')) {
+    currentUser = JSON.parse(localStorage.getItem('caldenUser'));
+    renderHome();
+  } else {
+    renderLogin();
+  }
 }
 
 function renderLogin() {
@@ -69,161 +76,40 @@ function renderHome() {
         <p>It is a website created by Calden Biotech CEO and Founder Shourya Sinha. It is a study portal for BTech Biotechnology 2026 batch for various semester exams.</p>
       </div>
       <h2 style="margin-bottom:1rem">Subjects</h2>
-      <div class="grid">${cards}</div>
+      <div class="grid">${cards || '<p>No subjects available yet.</p>'}</div>
     </div>`;
 }
 
 function openSubject(id) {
-  if (id === 'em1') renderEM1();
-  else alert('Content coming soon');
+  if (id === 'em1') {
+    loadSubject('em1');
+  } else {
+    alert('Content for this subject is coming soon.');
+  }
 }
 
-function renderEM1() {
-  document.getElementById('app').innerHTML = `
-    <header>
-      <div>
-        <div class="logo-main">IAR BTech Biotechnology</div>
-        <div class="logo-sub">Engineering Mathematics-1</div>
-      </div>
-      <div style="display:flex;gap:1rem;align-items:center">
-        <button onclick="renderHome()" style="background:none;border:1px solid #e2e8f0;padding:0.4rem 0.8rem;border-radius:6px;cursor:pointer">← Back</button>
-        <div class="calden-corner">🌿 Calden Biotech</div>
-      </div>
-    </header>
-    <div class="container">
-      <div class="tabs">
-        <div class="tab active" onclick="showTab('notes', this)">Notes</div>
-        <div class="tab" onclick="showTab('formulas', this)">Formulas</div>
-        <div class="tab" onclick="showTab('pyqs', this)">PYQs</div>
-        <div class="tab" onclick="showTab('practice', this)">Practice / QB</div>
-      </div>
-      <div id="tabContent"></div>
-    </div>`;
-  showTab('notes', document.querySelector('.tab'));
+async function loadSubject(id) {
+  const script = document.createElement('script');
+  script.src = `js/subjects/${id}.js`;
+  script.onload = () => {
+    if (window.renderSubject) window.renderSubject();
+  };
+  script.onerror = () => alert('Could not load subject content.');
+  document.body.appendChild(script);
 }
 
 function showTab(tab, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   if (el) el.classList.add('active');
   const content = document.getElementById('tabContent');
-  if (tab === 'notes') content.innerHTML = getNotes();
-  if (tab === 'formulas') content.innerHTML = getFormulas();
-  if (tab === 'pyqs') content.innerHTML = getPYQs();
-  if (tab === 'practice') content.innerHTML = getPractice();
-  if (window.renderMathInElement) {
-    setTimeout(() => {
-      renderMathInElement(content, {
-        delimiters: [
-          {left: '$$', right: '$$', display: true},
-          {left: '$', right: '$', display: false},
-          {left: '\\(', right: '\\)', display: false},
-          {left: '\\[', right: '\\]', display: true}
-        ],
-        throwOnError: false
-      });
-    }, 100);
-  }
+  if (!content) return;
+  if (tab === 'notes' && window.getNotes) content.innerHTML = window.getNotes();
+  if (tab === 'formulas' && window.getFormulas) content.innerHTML = window.getFormulas();
+  if (tab === 'pyqs' && window.getPYQs) content.innerHTML = window.getPYQs();
+  if (tab === 'practice' && window.getPractice) content.innerHTML = window.getPractice();
 }
 
-function getNotes() {
-  return `<div class="content-section">
-    <h2>Unit I: Partial Differentiation & Multivariable Calculus</h2>
-    <h3>1.1 Limits & Continuity in Higher Dimensions</h3>
-    <p>A limit \(\lim_{(x,y)\to(a,b)} f(x,y) = L\) exists only if \(f(x,y)\) approaches \(L\) along <strong>every possible path</strong> to \((a,b)\).</p>
-    <div class="formula-box">
-      <strong>Key Limit Results</strong><br>
-      Direct substitution works if the function is continuous at the point.<br>
-      Power rule: \(\displaystyle\lim_{x\to a}\frac{x^n-a^n}{x-a}=na^{n-1}\)<br>
-      Two-path test: if two paths give different limits, the limit does not exist.
-    </div>
-    <h3>1.2 Partial Derivatives & Clairaut’s Theorem</h3>
-    <p>To find \(f_x\), treat \(y\) as constant. To find \(f_y\), treat \(x\) as constant.</p>
-    <div class="formula-box">
-      \(f_x = \dfrac{\partial f}{\partial x},\quad f_y = \dfrac{\partial f}{\partial y}\)<br>
-      Clairaut’s Theorem: if the mixed partials are continuous, then \(f_{xy}=f_{yx}\).
-    </div>
-    <h3>1.3 Chain Rule & Total Differentials</h3>
-    <div class="formula-box">
-      If \(z=f(x(t),y(t))\): \(\dfrac{dz}{dt}=f_x\dfrac{dx}{dt}+f_y\dfrac{dy}{dt}\)<br>
-      Implicit: \(\dfrac{dy}{dx}=-\dfrac{F_x}{F_y}\)
-    </div>
-    <h3>1.4 Homogeneous Functions & Euler’s Theorem</h3>
-    <div class="formula-box">
-      \(f\) is homogeneous of degree \(n\) if \(f(tx,ty)=t^n f(x,y)\).<br>
-      Euler’s theorem: \(x\dfrac{\partial u}{\partial x}+y\dfrac{\partial u}{\partial y}=nu\)
-    </div>
-    <h3>Units II–V (Overview from your notes)</h3>
-    <ul>
-      <li><strong>Unit II</strong> — Infinite series, convergence tests, Taylor & Maclaurin series</li>
-      <li><strong>Unit III</strong> — Improper integrals, Beta & Gamma functions, areas & volumes of revolution</li>
-      <li><strong>Unit IV</strong> — Double & triple integrals, change of order, Gradient, Divergence, Curl, Stokes/Gauss/Green theorems</li>
-      <li><strong>Unit V</strong> — First & second order ODEs, Cauchy-Euler, Legendre polynomials, first-order PDEs</li>
-    </ul>
-  </div>`;
-}
-
-function getFormulas() {
-  return `<div class="content-section">
-    <h2>Master Formula Sheet</h2>
-    <div class="formula-box">
-      <strong>Limits</strong><br>
-      \(\displaystyle\lim_{x\to a}\frac{x^n-a^n}{x-a}=na^{n-1}\)<br>
-      \(\displaystyle\lim_{x\to 0}\frac{\sin kx}{x}=k\)
-    </div>
-    <div class="formula-box">
-      <strong>Partial Derivatives</strong><br>
-      \(f_x=\dfrac{\partial f}{\partial x},\quad f_y=\dfrac{\partial f}{\partial y}\)<br>
-      Clairaut: \(f_{xy}=f_{yx}\) (when continuous)
-    </div>
-    <div class="formula-box">
-      <strong>Chain Rule</strong><br>
-      \(\dfrac{dz}{dt}=f_x\dfrac{dx}{dt}+f_y\dfrac{dy}{dt}\)
-    </div>
-    <div class="formula-box">
-      <strong>Euler’s Theorem</strong><br>
-      \(x u_x + y u_y = n u\) (homogeneous of degree \(n\))
-    </div>
-  </div>`;
-}
-
-function getPYQs() {
-  return `<div class="content-section">
-    <h2>Past Year Questions (Years Marked)</h2>
-    <div class="pyq-card">
-      <span class="year-tag">Mid-Sem 2024 Set B & 2025 Set B</span>
-      <strong>Evaluate</strong> \(\displaystyle\lim_{x\to 5}\frac{x-5}{x^2-25}\)
-      <p><strong>Solution:</strong> Factor denominator as \((x-5)(x+5)\), cancel, get \(\dfrac{1}{10}\).</p>
-    </div>
-    <div class="pyq-card">
-      <span class="year-tag">Mid-Sem 2024/2025 & Re-Exam 2026</span>
-      <strong>Continuity parameter:</strong> Find \(A\) so that<br>
-      \(f(x)=\begin{cases} A+x & x<2 \\ 1+x^2 & x\ge 2 \end{cases}\) is continuous at \(x=2\).
-      <p><strong>Answer:</strong> \(A=3\)</p>
-    </div>
-    <div class="pyq-card">
-      <span class="year-tag">SEE 2024 & 2025</span>
-      <strong>Partial derivatives:</strong> If \(f(x,y)=x^2+y^2+x^2y^2\), find \(f_x\) and \(f_y\).
-      <p><strong>Answer:</strong> \(f_x=2x+2xy^2\), \(f_y=2y+2x^2y\)</p>
-    </div>
-  </div>`;
-}
-
-function getPractice() {
-  return `<div class="content-section">
-    <h2>Question Bank & Extra Practice</h2>
-    <div class="pyq-card">
-      <strong>Practice Q1</strong><br>
-      Evaluate \(\displaystyle\lim_{x\to 4}\frac{x^2-16}{x^2-3x-4}\)
-      <p><strong>Answer:</strong> \(\dfrac{8}{5}\)</p>
-    </div>
-    <div class="pyq-card">
-      <strong>Practice Q2</strong><br>
-      Find \(k\) so that \(f(x)=\begin{cases} kx^2+1 & x\le 3 \\ 2x+7 & x>3 \end{cases}\) is continuous at \(x=3\).
-      <p><strong>Answer:</strong> \(k=\dfrac{4}{3}\)</p>
-    </div>
-  </div>`;
-}
-
+// Chatbot
 function toggleChat() {
   const p = document.getElementById('chatPanel');
   p.style.display = p.style.display === 'flex' ? 'none' : 'flex';
@@ -231,24 +117,29 @@ function toggleChat() {
 
 function sendChat() {
   const input = document.getElementById('chatInput');
-  const text = input.value.trim().toLowerCase();
+  const text = (input.value || '').trim();
   if (!text) return;
   const msgs = document.getElementById('chatMessages');
-  msgs.innerHTML += `<div class="msg user">${input.value}</div>`;
+  msgs.innerHTML += `<div class="msg user">${text}</div>`;
   input.value = '';
 
-  let reply = "I can help with Engineering Mathematics-1. Ask about limits, partial derivatives, Euler’s theorem, chain rule, or PYQs.";
+  const lower = text.toLowerCase();
+  let reply = "Ask me about limits, partial derivatives, Euler’s theorem, chain rule, series, Beta/Gamma, or PYQs from Engineering Mathematics-1.";
 
-  if (text.includes('limit') || text.includes('lim')) {
-    reply = "Limits in two variables require the same value along every path. Common PYQ: lim (x→5) (x-5)/(x²-25) = 1/10. Use factorization for 0/0 forms.";
-  } else if (text.includes('partial') || text.includes('derivative')) {
-    reply = "Partial derivatives: treat the other variable as constant. Clairaut’s theorem says f_xy = f_yx if continuous.";
-  } else if (text.includes('euler')) {
-    reply = "Euler’s theorem: if u is homogeneous of degree n, then x·u_x + y·u_y = n·u.";
-  } else if (text.includes('chain')) {
-    reply = "Chain rule: dz/dt = f_x dx/dt + f_y dy/dt. For implicit functions, dy/dx = -F_x / F_y.";
-  } else if (text.includes('pyq') || text.includes('exam')) {
-    reply = "High-yield PYQs include continuity parameter questions (A=3) and factorization limits. Check the PYQs tab.";
+  if (lower.includes('limit') || lower.includes('lim')) {
+    reply = "For two-variable limits, the limit must be the same along every path. Classic example: lim (x,y)→(0,0) of xy/(x²+y²) does not exist (path test). Common PYQ: lim (x→5) (x-5)/(x²-25) = 1/10.";
+  } else if (lower.includes('partial') || lower.includes('fx') || lower.includes('fy')) {
+    reply = "Partial derivatives: treat the other variable as constant. Clairaut’s theorem says mixed partials are equal if continuous. Example: for f = x² + y² + x²y², fx = 2x + 2xy² and fy = 2y + 2x²y.";
+  } else if (lower.includes('euler')) {
+    reply = "Euler’s theorem: if u is homogeneous of degree n, then x·ux + y·uy = n·u. Check homogeneity by substituting (tx, ty) and seeing if you get tⁿ times the original function.";
+  } else if (lower.includes('chain') || lower.includes('total differential')) {
+    reply = "Chain rule: dz/dt = fx·dx/dt + fy·dy/dt. For constrained problems, find dy/dx from the constraint using implicit differentiation, then substitute.";
+  } else if (lower.includes('beta') || lower.includes('gamma')) {
+    reply = "Gamma: Γ(n+1) = nΓ(n), and Γ(1/2) = √π. Beta: B(m,n) = Γ(m)Γ(n)/Γ(m+n) and B(m,n) = B(n,m).";
+  } else if (lower.includes('series') || lower.includes('taylor') || lower.includes('maclaurin')) {
+    reply = "Maclaurin series for eˣ = 1 + x + x²/2! + x³/3! + ... . p-series 1/nᵖ converges when p > 1. Ratio test: look at |aₙ₊₁/aₙ|.";
+  } else if (lower.includes('pyq') || lower.includes('exam') || lower.includes('question')) {
+    reply = "High-yield topics: continuity parameter problems (A=3, B=5), factorization limits, partial derivatives of polynomials, and Euler’s theorem verification. Check the PYQs tab for years.";
   }
 
   setTimeout(() => {
@@ -258,9 +149,4 @@ function sendChat() {
   msgs.scrollTop = msgs.scrollHeight;
 }
 
-if (localStorage.getItem('caldenUser')) {
-  currentUser = JSON.parse(localStorage.getItem('caldenUser'));
-  init().then(renderHome);
-} else {
-  init();
-}
+init();
