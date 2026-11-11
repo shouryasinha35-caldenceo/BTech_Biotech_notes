@@ -124,7 +124,7 @@ function sendChat() {
   msgs.innerHTML += `<div class="msg bot" id="loading">Thinking...</div>`;
   msgs.scrollTop = msgs.scrollHeight;
 
-  const API_KEY = "AQ.Ab8RN6KXBcj8Fm1XIS1GmsIurie_JVPuwduRcwxKXqK8pGCs-Q";
+const API_KEY = "AQ.Ab8RN6J9pDb5K0QZ7P_qgt3CNRcpAL9GoQlLhdc_ywni2IL1Qg";
 
   fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
     method: "POST",
