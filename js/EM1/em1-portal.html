@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EM-1 Complete Study Portal | Calden Biotech</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{--teal:#0d9488;--teal-dark:#0f766e;--bg:#f8fafc;--card:#fff;--text:#1e293b;--muted:#64748b;--gold:#d97706}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+header{background:linear-gradient(135deg,#0f766e,#0d9488);color:#fff;padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
+header h1{margin:0;font-size:1.3rem}
+.tabs{background:#fff;border-bottom:1px solid #e2e8f0;display:flex;gap:0;padding:0 1rem;position:sticky;top:0;z-index:20}
+.tabs button{flex:1;max-width:200px;padding:0.75rem;border:none;background:transparent;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+.tabs button.active{color:var(--teal-dark);border-bottom-color:var(--teal)}
+main{max-width:980px;margin:1.25rem auto;padding:0 1rem 3rem}
+.panel{display:none}
+.panel.active{display:block}
+.card{background:var(--card);border-radius:10px;padding:1.1rem 1.25rem;margin-bottom:1rem;box-shadow:0 1px 3px rgba(0,0,0,0.06);border:1px solid #e2e8f0}
+.card h3{margin:0 0 0.5rem;color:var(--teal-dark);font-size:1.05rem}
+.formula{background:#f8fafc;padding:0.7rem 0.9rem;border-radius:8px;margin:0.5rem 0;overflow-x:auto;border:1px solid #e2e8f0}
+.pyq{background:#fffbeb;border-left:4px solid var(--gold);padding:0.7rem 0.9rem;margin:0.6rem 0;border-radius:0 6px 6px 0}
+.meta{font-size:0.75rem;color:var(--muted);margin-bottom:0.4rem}
+.filter{margin-bottom:1rem}
+.filter select, .filter input{padding:0.45rem 0.6rem;border:1px solid #cbd5e1;border-radius:6px;font-size:0.85rem}
+.q-item{margin-bottom:1rem}
+.q-item .sol{margin-top:0.5rem;padding:0.6rem;background:#f0fdfa;border-radius:6px;font-size:0.92rem}
+footer{text-align:center;font-size:0.75rem;color:var(--muted);padding:1rem}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Engineering Mathematics – I</h1>
+    <div style="font-size:0.8rem;opacity:0.9">Notes · Formulas · Question Bank · BTech Biotech 2026</div>
+  </div>
+  <div style="font-size:0.8rem">Calden Biotech</div>
+</header>
+
+<div class="tabs">
+  <button class="active" data-tab="notes">Notes</button>
+  <button data-tab="formulas">Formulas</button>
+  <button data-tab="questions">Questions</button>
+</div>
+
+<main>
+  <div id="notes" class="panel active"></div>
+  <div id="formulas" class="panel">
+    <div class="filter">
+      <select id="unitFilter"><option value="">All Units</option><option>I</option><option>II</option><option>III</option><option>IV</option><option>V</option></select>
+      <input type="search" id="searchBox" placeholder="Search formulas…" style="margin-left:0.5rem;width:220px">
+    </div>
+    <div id="formulaList"></div>
+  </div>
+  <div id="questions" class="panel">
+    <div class="filter">
+      <select id="qUnitFilter"><option value="">All Units</option><option>I</option><option>II</option><option>III</option><option>IV</option><option>V</option></select>
+      <input type="search" id="qSearch" placeholder="Search questions…" style="margin-left:0.5rem;width:220px">
+    </div>
+    <div id="questionList"></div>
+  </div>
+</main>
+
+<footer>Calden Biotech · EM-1 Study Portal · Content from Master Study Guide, Formula Sheet & Question Bank</footer>
+
+<script src="notes.js"></script>
+<script src="formulas.js"></script>
+<script src="questions.js"></script>
+<script>
+function renderMath(el){
+  if(window.renderMathInElement) renderMathInElement(el,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true},{left:'$$',right:'$$',display:true}]});
+}
+
+function renderNotes(){
+  const container = document.getElementById('notes');
+  container.innerHTML = '';
+  (window.courseNotes||[]).forEach(unit=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<h2 style="margin:0 0 0.75rem;color:#0f766e">${unit.title}</h2>`;
+    unit.sections.forEach(sec=>{
+      const secEl = document.createElement('div');
+      secEl.innerHTML = `<h3>${sec.title}</h3>${sec.content}`;
+      card.appendChild(secEl);
+    });
+    container.appendChild(card);
+  });
+  renderMath(container);
+}
+
+function renderFormulas(){
+  const unit = document.getElementById('unitFilter').value;
+  const q = document.getElementById('searchBox').value.toLowerCase();
+  const list = document.getElementById('formulaList');
+  list.innerHTML = '';
+  (window.formulaDeck||[]).filter(f => (!unit || f.unit===unit) && (!q || (f.title+f.formula+f.explanation).toLowerCase().includes(q))).forEach(f=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="meta">Unit ${f.unit} · ${f.category}</div>
+      <h3>${f.title}</h3>
+      <div class="formula">\\[${f.formula}\\]</div>
+      <p><strong>When to use:</strong> ${f.whenToUse}</p>
+      <p>${f.explanation}</p>
+      <p style="font-size:0.85rem;color:#64748b"><strong>Calculator tip:</strong> ${f.calcTip}</p>
+    `;
+    list.appendChild(card);
+  });
+  renderMath(list);
+}
+
+function renderQuestions(){
+  const unit = document.getElementById('qUnitFilter').value;
+  const q = document.getElementById('qSearch').value.toLowerCase();
+  const list = document.getElementById('questionList');
+  list.innerHTML = '';
+  (window.questionBank||[]).filter(item => (!unit || item.unit===unit) && (!q || (item.question+item.topic).toLowerCase().includes(q))).forEach(item=>{
+    const card = document.createElement('div');
+    card.className = 'card q-item';
+    card.innerHTML = `
+      <div class="meta">${item.type} · Unit ${item.unit} · ${item.marks} marks · ${item.topic}</div>
+      <div>${item.question}</div>
+      <div class="sol"><strong>Solution:</strong> ${item.solution}</div>
+    `;
+    list.appendChild(card);
+  });
+  renderMath(list);
+}
+
+document.querySelectorAll('.tabs button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+    if(btn.dataset.tab==='formulas') renderFormulas();
+    if(btn.dataset.tab==='questions') renderQuestions();
+  });
+});
+
+document.getElementById('unitFilter').addEventListener('change', renderFormulas);
+document.getElementById('searchBox').addEventListener('input', renderFormulas);
+document.getElementById('qUnitFilter').addEventListener('change', renderQuestions);
+document.getElementById('qSearch').addEventListener('input', renderQuestions);
+
+renderNotes();
+renderFormulas();
+renderQuestions();
+</script>
+</body>
+</html>
