@@ -103,49 +103,39 @@ function showTab(tab, el) {
   if (el) el.classList.add('active');
   const content = document.getElementById('tabContent');
   if (!content) return;
-  if (tab === 'notes' && window.getNotes) content.innerHTML = window.getNotes();
-  if (tab === 'formulas' && window.getFormulas) content.innerHTML = window.getFormulas();
-  if (tab === 'pyqs' && window.getPYQs) content.innerHTML = window.getPYQs();
-  if (tab === 'practice' && window.getPractice) content.innerHTML = window.getPractice();
+
+  if (tab === 'notes' && window.courseNotes) {
+    content.innerHTML = window.courseNotes.map(unit => `
+      <div class="unit">
+        <h3>${unit.title}</h3>
+        ${unit.sections.map(s => `<h4>${s.title}</h4>${s.content}`).join('')}
+      </div>
+    `).join('');
+  }
+  if (tab === 'formulas' && window.formulaDeck) {
+    content.innerHTML = window.formulaDeck.map(f => `
+      <div class="formula-card">
+        <h4>${f.title}</h4>
+        <div class="formula">$${f.formula}$</div>
+        <p><strong>When to use:</strong> ${f.whenToUse}</p>
+        <p>${f.explanation}</p>
+        <p><em>${f.calcTip}</em></p>
+      </div>
+    `).join('');
+  }
+  if ((tab === 'pyqs' || tab === 'practice') && window.questionBank) {
+    const list = window.questionBank.filter(q => 
+      tab === 'pyqs' ? q.type === 'PYQ' : true
+    );
+    content.innerHTML = list.map(q => `
+      <div class="q-card">
+        <div class="q-meta">${q.type} · ${q.marks} marks · Unit ${q.unit} · ${q.topic}</div>
+        <div class="q-text">${q.question}</div>
+        <div class="q-sol">${q.solution}</div>
+      </div>
+    `).join('');
+  }
 }
-
-// Chatbot
-function toggleChat() {
-  const p = document.getElementById('chatPanel');
-  p.style.display = p.style.display === 'flex' ? 'none' : 'flex';
-}
-function sendChat() {
-  const input = document.getElementById('chatInput');
-  const text = (input.value || '').trim();
-  if (!text) return;
-  const msgs = document.getElementById('chatMessages');
-  msgs.innerHTML += `<div class="msg user">${text}</div>`;
-  input.value = '';
-  msgs.innerHTML += `<div class="msg bot" id="loading">Thinking...</div>`;
-  msgs.scrollTop = msgs.scrollHeight;
-
-const API_KEY = "AQ.Ab8RN6LVuzW6wPzpbNVPp26HpdZQTCbZezq4h3-tKFKd-tWcbA";
-
-  fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      contents: [{
-        parts: [{
-          text: `You are a helpful study assistant for BTech Biotechnology students. Focus on Engineering Mathematics-1. Answer clearly.\n\nQuestion: ${text}`
-        }]
-      }]
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't generate a response.";
-    document.getElementById('loading').outerHTML = `<div class="msg bot">${reply.replace(/\n/g, '<br>')}</div>`;
-    msgs.scrollTop = msgs.scrollHeight;
-  })
-  .catch(() => {
-    document.getElementById('loading').outerHTML = `<div class="msg bot">Error connecting to AI. Try again later.</div>`;
-  });
 }
 
 init();
