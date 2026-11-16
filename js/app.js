@@ -185,6 +185,5 @@ function showTab(tab, el) {
     `).join('');
   }
 }
-}
 
 init();
