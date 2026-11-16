@@ -1,0 +1,273 @@
+{
+  "subject": "Engineering Mathematics-1",
+  "code": "EM201T",
+  "title": "Complete EM-1 Study Material",
+  "units": [
+    {
+      "unit": "Unit I",
+      "title": "Partial Differentiation & Multivariable Calculus",
+      "topics": [
+        {
+          "id": "1.1",
+          "title": "Functions of Several Variables",
+          "explanation": "<p>A function of several variables takes more than one input. For example, z = f(x, y) maps two independent variables to one output.</p><p>Visual analogy: (x, y) is your position on the ground and z is the height of the terrain. The graph is a surface in 3D space.</p><p>Example: f(x, y) = x² + y² is a paraboloid. At (0,0) the value is 0. At (1,2) the value is 5.</p>",
+          "questions": [
+            {
+              "type": "Practice",
+              "marks": 2,
+              "question": "Describe the surface z = x² + y². What is f(1, 2)?"
+            }
+          ]
+        },
+        {
+          "id": "1.2",
+          "title": "Limits & Continuity in Higher Dimensions",
+          "explanation": "<p>In multivariable calculus a limit exists only if the function approaches the same value along every possible path to the point.</p><p>Path test: Substitute y = mx. If the result depends on m, the limit does not exist.</p><p>Example: lim (x,y)→(0,0) of xy/(x²+y²). Along y = mx the limit is m/(1+m²), which changes with m. Hence the limit does not exist.</p><p>For piecewise continuity at a boundary, left-hand limit must equal right-hand limit must equal the function value.</p>",
+          "questions": [
+            {
+              "type": "PYQ",
+              "marks": 5,
+              "question": "Show that lim (x,y)→(0,0) of xy/(x² + y²) does not exist.",
+              "solution": "Along y = mx, limit = m/(1+m²). Different m give different values. Limit does not exist."
+            },
+            {
+              "type": "PYQ",
+              "marks": 2,
+              "question": "Find A so that f(x) = A + x for x < 2 and 1 + x² for x ≥ 2 is continuous at x = 2.",
+              "solution": "LHL = A + 2, RHL = 5. A = 3."
+            },
+            {
+              "type": "PYQ",
+              "marks": 2,
+              "question": "Find B so that f(x) = 2x² + 3 for x ≤ 2 and 3x + B for x > 2 is continuous at x = 2.",
+              "solution": "f(2) = 11, RHL = 6 + B. B = 5."
+            }
+          ]
+        },
+        {
+          "id": "1.3",
+          "title": "Partial Derivatives & Clairaut’s Theorem",
+          "explanation": "<p>Partial derivative with respect to x treats y as constant. Partial with respect to y treats x as constant.</p><p>Example: f(x,y) = x² + y² + x²y² → fx = 2x + 2xy², fy = 2y + 2x²y.</p><p>Clairaut’s Theorem: If the second partials are continuous, then fxy = fyx.</p>",
+          "questions": [
+            {
+              "type": "PYQ",
+              "marks": 5,
+              "question": "If f(x,y) = x² + y² + x²y², find all first-order partial derivatives.",
+              "solution": "fx = 2x + 2xy², fy = 2y + 2x²y"
+            },
+            {
+              "type": "PYQ",
+              "marks": 4,
+              "question": "Find all first-order partials of f(x,y) = 6x² + 13xy + 4y².",
+              "solution": "fx = 12x + 13y, fy = 13x + 8y"
+            }
+          ]
+        },
+        {
+          "id": "1.4",
+          "title": "Chain Rule & Total Differentials",
+          "explanation": "<p>If z = f(x,y) and x = x(t), y = y(t), then dz/dt = fx dx/dt + fy dy/dt.</p><p>For total differential coefficient under a constraint, differentiate the constraint implicitly to find dy/dx, then substitute into the total derivative formula.</p>",
+          "questions": [
+            {
+              "type": "PYQ",
+              "marks": 5,
+              "question": "Find the total differential coefficient of u = x²y with respect to x where x² + xy + y² = 1.",
+              "solution": "du/dx = (3x²y + 4xy² - 2x³)/(x + 2y)"
+            }
+          ]
+        },
+        {
+          "id": "1.5",
+          "title": "Homogeneous Functions & Euler’s Theorem",
+          "explanation": "<p>A function is homogeneous of degree n if f(tx, ty) = tⁿ f(x,y).</p><p>Euler’s Theorem: x ux + y uy = n u.</p><p>This is a standard 5-mark proof question.</p>",
+          "questions": [
+            {
+              "type": "PYQ",
+              "marks": 5,
+              "question": "State and prove Euler’s theorem on homogeneous functions.",
+              "solution": "Write u = xⁿ F(y/x). Differentiate partially and add after multiplying by x and y."
+            },
+            {
+              "type": "Practice",
+              "marks": 3,
+              "question": "Verify Euler’s theorem for u = x³ + 3x²y + 3xy² + y³."
+            }
+          ]
+        },
+        {
+          "id": "1.6",
+          "title": "Gradient, Directional Derivatives & Extrema",
+          "explanation": "<p>Gradient of Φ(x,y,z) is ∇Φ = Φx i + Φy j + Φz k.</p><p>Directional derivative in direction of unit vector û is ∇Φ · û.</p><p>For extrema of f(x,y): solve fx = 0, fy = 0. Then compute Δ = fxx fyy - (fxy)². If Δ > 0 and fxx > 0, relative minimum. If Δ > 0 and fxx < 0, relative maximum. If Δ < 0, saddle point.</p>",
+          "questions": [
+            {
+              "type": "PYQ",
+              "marks": 5,
+              "question": "Find ∇Φ for Φ = 3x²y - y³z² at (1, -2, -1).",
+              "solution": "∇Φ = -12i - 9j - 16k"
+            },
+            {
+              "type": "PYQ",
+              "marks": 5,
+              "question": "Find the directional derivative of f = xyz at (1,-1,1) in the direction of 3i - 4k.",
+              "solution": "0.2"
+            },
+            {
+              "type": "PYQ",
+              "marks": 5,
+              "question": "Classify the relative extrema of f(x,y) = 6x² + 10y² + 2x - 3y + 15.",
+              "solution": "Relative minimum at (-1/6, 3/20)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": "Unit II",
+      "title": "Infinite Series & Expansions",
+      "topics": [
+        {
+          "id": "2.1",
+          "title": "Convergence Tests",
+          "explanation": "<p>An infinite series converges if the sequence of partial sums approaches a finite limit.</p><p>Key tests: nth-term test, geometric series, p-series, ratio test, root test, Leibniz alternating test.</p>",
+          "questions": [
+            {
+              "type": "PYQ",
+              "marks": 3,
+              "question": "Evaluate the sum from i=1 to 4 of (2n + 3).",
+              "solution": "32"
+            },
+            {
+              "type": "Practice",
+              "marks": 4,
+              "question": "Test the convergence of the series ∑ n / 2ⁿ using the ratio test."
+            }
+          ]
+        },
+        {
+          "id": "2.2",
+          "title": "Taylor & Maclaurin Series",
+          "explanation": "<p>Maclaurin series is the Taylor series expanded about x = 0.</p><p>ex = 1 + x + x²/2! + x³/3! + ...</p><p>sin x = x - x³/3! + x⁵/5! - ...</p><p>ln(1+x) = x - x²/2 + x³/3 - ...</p>",
+          "questions": [
+            {
+              "type": "PYQ",
+              "marks": 5,
+              "question": "Derive the Maclaurin series for eˣ.",
+              "solution": "All derivatives at 0 are 1. Series is ∑ xⁿ/n!."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": "Unit III",
+      "title": "Improper Integrals & Applications",
+      "topics": [
+        {
+          "id": "3.1",
+          "title": "Improper Integrals",
+          "explanation": "<p>Type 1: infinite limits. Type 2: integrand becomes infinite inside the interval.</p><p>Example: ∫ from 1 to ∞ of 1/x² dx = 1 (convergent).</p>",
+          "questions": [
+            {
+              "type": "Practice",
+              "marks": 4,
+              "question": "Evaluate ∫ from 0 to ∞ of e⁻³ˣ dx."
+            }
+          ]
+        },
+        {
+          "id": "3.2",
+          "title": "Beta & Gamma Functions",
+          "explanation": "<p>Γ(n) = ∫ from 0 to ∞ of xⁿ⁻¹ e⁻ˣ dx. Γ(n+1) = nΓ(n). Γ(1/2) = √π.</p><p>B(m,n) = ∫ from 0 to 1 of xᵐ⁻¹ (1-x)ⁿ⁻¹ dx. B(m,n) = Γ(m)Γ(n)/Γ(m+n).</p>",
+          "questions": [
+            {
+              "type": "PYQ",
+              "marks": 5,
+              "question": "Prove that B(m,n) = B(n,m).",
+              "solution": "Substitute u = 1 - x."
+            },
+            {
+              "type": "PYQ",
+              "marks": 4,
+              "question": "Find Γ(5/2).",
+              "solution": "3√π / 4"
+            }
+          ]
+        },
+        {
+          "id": "3.3",
+          "title": "Area & Volume of Revolution",
+          "explanation": "<p>Disk method and shell method are used for volumes of solids of revolution. Area between curves is found by definite integration.</p>",
+          "questions": [
+            {
+              "type": "PYQ",
+              "marks": 5,
+              "question": "Find the volume generated by revolving y = x² from x = 1 to 3 about the y-axis.",
+              "solution": "40π"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": "Unit IV",
+      "title": "Multiple Integration & Vector Calculus",
+      "topics": [
+        {
+          "id": "4.1",
+          "title": "Double & Triple Integrals",
+          "explanation": "<p>Double and triple integrals can be evaluated as iterated integrals. Order of integration can be changed when needed. Polar coordinates are useful for circular regions.</p>",
+          "questions": [
+            {
+              "type": "PYQ",
+              "marks": 5,
+              "question": "Evaluate the triple integral of xy²z over the region 0≤x≤2, 1≤y≤3, 1≤z≤2.",
+              "solution": "26"
+            }
+          ]
+        },
+        {
+          "id": "4.2",
+          "title": "Divergence, Curl & Theorems",
+          "explanation": "<p>Divergence measures outward flux. Curl measures rotation. Green’s, Stokes’, and Gauss’s theorems relate line, surface, and volume integrals (statements only required for most exams).</p>",
+          "questions": [
+            {
+              "type": "Practice",
+              "marks": 4,
+              "question": "State Gauss’s divergence theorem."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": "Unit V",
+      "title": "Ordinary & Partial Differential Equations",
+      "topics": [
+        {
+          "id": "5.1",
+          "title": "First-Order Linear ODEs",
+          "explanation": "<p>First-order linear equations are solved using an integrating factor. For dy/dx + P(x)y = Q(x), the integrating factor is e^∫P dx.</p>",
+          "questions": [
+            {
+              "type": "Practice",
+              "marks": 4,
+              "question": "Solve dy/dx + 2xy = 4x."
+            }
+          ]
+        },
+        {
+          "id": "5.2",
+          "title": "Cauchy-Euler & Legendre",
+          "explanation": "<p>Cauchy-Euler equations use the substitution x = eᶻ. Legendre polynomials satisfy a specific second-order ODE and have Rodrigues’ formula.</p>",
+          "questions": [
+            {
+              "type": "Practice",
+              "marks": 3,
+              "question": "Write Rodrigues’ formula for Legendre polynomials."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
