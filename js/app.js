@@ -92,10 +92,10 @@ function openSubject(id) {
 async function loadEM1FromJSON() {
   try {
     const res = await fetch('js/EM1/EM1_Complete.json');
-    if (!res.ok) throw new Error('HTTP error ' + res.status);
+    if (!res.ok) throw new Error('File not found');
     const data = await res.json();
 
-    document.getElementById('app').innerHTML = `
+    let html = `
       <header>
         <div>
           <div class="logo-main">IAR BTech Biotechnology</div>
@@ -106,9 +106,40 @@ async function loadEM1FromJSON() {
       <div class="container">
         <button onclick="renderHome()" style="margin-bottom:1rem">← Back to Subjects</button>
         <h1>${data.title}</h1>
-        <div id="topics"></div>
-      </div>`;
+    `;
 
+    data.units.forEach(unit => {
+      html += `<h2 style="margin-top:2rem;color:#0ea5e9;">${unit.unit}: ${unit.title}</h2>`;
+      unit.topics.forEach(topic => {
+        html += `
+          <div class="topic-card">
+            <h3>${topic.id} ${topic.title}</h3>
+            <div class="explanation">${topic.explanation}</div>
+            <h4>Questions</h4>
+            ${topic.questions.map(q => `
+              <div class="q-item">
+                <strong>${q.type} (${q.marks} marks)</strong><br>
+                ${q.question}
+                ${q.solution ? `<details><summary>Solution</summary>${q.solution}</details>` : ''}
+              </div>
+            `).join('')}
+          </div>
+        `;
+      });
+    });
+
+    html += `</div>`;
+    document.getElementById('app').innerHTML = html;
+  } catch (err) {
+    console.error(err);
+    document.getElementById('app').innerHTML = `
+      <div class="container">
+        <button onclick="renderHome()">← Back</button>
+        <h2>Failed to load EM-1</h2>
+        <p>${err.message}</p>
+      </div>`;
+  }
+}
     const topicsDiv = document.getElementById('topics');
 
     data.units.forEach(unit => {
