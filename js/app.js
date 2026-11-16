@@ -111,20 +111,21 @@ async function loadEM1FromJSON() {
 
     const topicsDiv = document.getElementById('topics');
     data.topics.forEach(topic => {
-      topicsDiv.innerHTML += `
-        <div class="topic-card" style="background:#1e293b;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;border:1px solid #334155;">
-          <h2 style="color:#38bdf8;margin-top:0;">${topic.id} ${topic.title}</h2>
-          <div class="explanation">${topic.explanation}</div>
-          <h3>Questions</h3>
-          ${topic.questions.map(q => `
-            <div class="q-item" style="background:#0f172a;padding:0.8rem;margin:0.5rem 0;border-radius:8px;">
-              <strong>${q.type} (${q.marks} marks)</strong><br>
-              ${q.question}
-              ${q.solution ? `<details style="margin-top:0.5rem;color:#94a3b8;"><summary>Solution</summary>${q.solution}</details>` : ''}
-            </div>
-          `).join('')}
-        </div>`;
-    });
+  topicsDiv.innerHTML += `
+    <div class="topic-card">
+      <h2>${topic.id} ${topic.title}</h2>
+      <div class="explanation">${topic.explanation}</div>
+      <h3>Questions</h3>
+      ${topic.questions.map(q => `
+        <div class="q-item">
+          <strong>${q.type} (${q.marks} marks)</strong><br>
+          ${q.question}
+          ${q.solution ? `<details><summary>Solution</summary>${q.solution}</details>` : ''}
+        </div>
+      `).join('')}
+    </div>
+  `;
+});
   } catch (err) {
     console.error(err);
     alert('Failed to load EM-1 content. Check console for details.');
