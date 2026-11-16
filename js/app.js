@@ -89,6 +89,12 @@ function openSubject(id) {
 }
 
 async function loadSubject(id) {
+  if (id === 'em1') {
+    await loadEM1FromJSON();
+    return;
+  }
+
+  // Keep old method for other subjects later
   const script = document.createElement('script');
   script.src = `js/subjects/${id}.js`;
   script.onload = () => {
@@ -96,6 +102,49 @@ async function loadSubject(id) {
   };
   script.onerror = () => alert('Could not load subject content.');
   document.body.appendChild(script);
+}
+
+async function loadEM1FromJSON() {
+  try {
+    const res = await fetch('js/EM1/EM1_Unit1.json');
+    const data = await res.json();
+
+    document.getElementById('app').innerHTML = `
+      <header>
+        <div>
+          <div class="logo-main">IAR BTech Biotechnology</div>
+          <div class="logo-sub">Engineering Mathematics-1</div>
+        </div>
+        <div class="calden-corner">Calden Biotech</div>
+      </header>
+      <div class="container">
+        <button onclick="renderHome()" style="margin-bottom:1rem">← Back to Subjects</button>
+        <h1>${data.unit}: ${data.title}</h1>
+        <div id="topics"></div>
+      </div>
+    `;
+
+    const topicsDiv = document.getElementById('topics');
+    data.topics.forEach(topic => {
+      topicsDiv.innerHTML += `
+        <div class="topic-card" style="background:#1e293b;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;border:1px solid #334155;">
+          <h2 style="color:#38bdf8;margin-top:0;">${topic.id} ${topic.title}</h2>
+          <div class="explanation">${topic.explanation}</div>
+          <h3>Questions</h3>
+          ${topic.questions.map(q => `
+            <div class="q-item" style="background:#0f172a;padding:0.8rem;margin:0.5rem 0;border-radius:8px;">
+              <strong>${q.type} (${q.marks} marks)</strong><br>
+              ${q.question}
+              ${q.solution ? `<details style="margin-top:0.5rem;color:#94a3b8;"><summary>Solution</summary>${q.solution}</details>` : ''}
+            </div>
+          `).join('')}
+        </div>
+      `;
+    });
+  } catch (err) {
+    console.error(err);
+    alert('Failed to load EM-1 content. Check if js/EM1/EM1_Unit1.json exists.');
+  }
 }
 
 function showTab(tab, el) {
