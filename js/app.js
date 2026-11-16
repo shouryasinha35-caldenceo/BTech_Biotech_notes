@@ -12,10 +12,11 @@ async function init() {
     users = (await uRes.json()).users || [];
     subjects = (await sRes.json()).subjects || [];
   } catch (e) {
-    console.warn('Using fallback data');
+    console.warn('Using fallback data', e);
     users = [{userid:'demo',password:'demo123',name:'Demo Student',status:'active'}];
     subjects = [{id:'em1',name:'Engineering Mathematics-1',type:'Theory',icon:'∑',desc:'Calculus & Differential Equations',active:true}];
   }
+
   if (localStorage.getItem('caldenUser')) {
     currentUser = JSON.parse(localStorage.getItem('caldenUser'));
     renderHome();
@@ -56,7 +57,7 @@ function doLogin() {
 function renderHome() {
   const cards = subjects.filter(s => s.active).map(s => `
     <div class="card" onclick="openSubject('${s.id}')">
-      <div class="card-icon">${s.icon || '📚'}</div>
+      <div class="card-icon">${s.icon || 'Book'}</div>
       <h3>${s.name}</h3>
       <p style="color:#64748b;font-size:0.9rem;margin:0.5rem 0">${s.desc || ''}</p>
       <span class="badge">${s.type}</span>
@@ -68,7 +69,7 @@ function renderHome() {
         <div class="logo-main">IAR BTech Biotechnology</div>
         <div class="logo-sub">Study Portal</div>
       </div>
-      <div class="calden-corner">🌿 Calden Biotech</div>
+      <div class="calden-corner">Calden Biotech</div>
     </header>
     <div class="container">
       <div class="about-box">
@@ -82,31 +83,16 @@ function renderHome() {
 
 function openSubject(id) {
   if (id === 'em1') {
-    loadSubject('em1');
+    loadEM1FromJSON();
   } else {
     alert('Content for this subject is coming soon.');
   }
 }
 
-async function loadSubject(id) {
-  if (id === 'em1') {
-    await loadEM1FromJSON();
-    return;
-  }
-
-  // Keep old method for other subjects later
-  const script = document.createElement('script');
-  script.src = `js/subjects/${id}.js`;
-  script.onload = () => {
-    if (window.renderSubject) window.renderSubject();
-  };
-  script.onerror = () => alert('Could not load subject content.');
-  document.body.appendChild(script);
-}
-
 async function loadEM1FromJSON() {
   try {
     const res = await fetch('js/EM1/EM1_Unit1.json');
+    if (!res.ok) throw new Error('JSON not found');
     const data = await res.json();
 
     document.getElementById('app').innerHTML = `
@@ -121,8 +107,7 @@ async function loadEM1FromJSON() {
         <button onclick="renderHome()" style="margin-bottom:1rem">← Back to Subjects</button>
         <h1>${data.unit}: ${data.title}</h1>
         <div id="topics"></div>
-      </div>
-    `;
+      </div>`;
 
     const topicsDiv = document.getElementById('topics');
     data.topics.forEach(topic => {
@@ -138,51 +123,11 @@ async function loadEM1FromJSON() {
               ${q.solution ? `<details style="margin-top:0.5rem;color:#94a3b8;"><summary>Solution</summary>${q.solution}</details>` : ''}
             </div>
           `).join('')}
-        </div>
-      `;
+        </div>`;
     });
   } catch (err) {
     console.error(err);
-    alert('Failed to load EM-1 content. Check if js/EM1/EM1_Unit1.json exists.');
-  }
-}
-
-function showTab(tab, el) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  if (el) el.classList.add('active');
-  const content = document.getElementById('tabContent');
-  if (!content) return;
-
-  if (tab === 'notes' && window.courseNotes) {
-    content.innerHTML = window.courseNotes.map(unit => `
-      <div class="unit">
-        <h3>${unit.title}</h3>
-        ${unit.sections.map(s => `<h4>${s.title}</h4>${s.content}`).join('')}
-      </div>
-    `).join('');
-  }
-  if (tab === 'formulas' && window.formulaDeck) {
-    content.innerHTML = window.formulaDeck.map(f => `
-      <div class="formula-card">
-        <h4>${f.title}</h4>
-        <div class="formula">$${f.formula}$</div>
-        <p><strong>When to use:</strong> ${f.whenToUse}</p>
-        <p>${f.explanation}</p>
-        <p><em>${f.calcTip}</em></p>
-      </div>
-    `).join('');
-  }
-  if ((tab === 'pyqs' || tab === 'practice') && window.questionBank) {
-    const list = window.questionBank.filter(q => 
-      tab === 'pyqs' ? q.type === 'PYQ' : true
-    );
-    content.innerHTML = list.map(q => `
-      <div class="q-card">
-        <div class="q-meta">${q.type} · ${q.marks} marks · Unit ${q.unit} · ${q.topic}</div>
-        <div class="q-text">${q.question}</div>
-        <div class="q-sol">${q.solution}</div>
-      </div>
-    `).join('');
+    alert('Failed to load EM-1 content. Check console for details.');
   }
 }
 
