@@ -140,59 +140,5 @@ async function loadEM1FromJSON() {
       </div>`;
   }
 }
-    const topicsDiv = document.getElementById('topics');
-
-    data.units.forEach(unit => {
-      topicsDiv.innerHTML += `<h2 style="margin-top:2rem;color:#0ea5e9;">${unit.unit}: ${unit.title}</h2>`;
-
-      unit.topics.forEach(topic => {
-        topicsDiv.innerHTML += `
-          <div class="topic-card">
-            <h3>${topic.id} ${topic.title}</h3>
-            <div class="explanation">${topic.explanation}</div>
-            <h4>Questions</h4>
-            ${topic.questions.map(q => `
-              <div class="q-item">
-                <strong>${q.type} (${q.marks} marks)</strong><br>
-                ${q.question}
-                ${q.solution ? `<details><summary>Solution</summary>${q.solution}</details>` : ''}
-              </div>
-            `).join('')}
-          </div>
-        `;
-      });
-    });
-  } catch (err) {
-    console.error(err);
-    document.getElementById('app').innerHTML = `
-      <div class="container">
-        <button onclick="renderHome()">← Back</button>
-        <h2 style="color:#f87171">Failed to load EM-1</h2>
-        <p>${err.message}</p>
-      </div>`;
-  }
-}
-    const topicsDiv = document.getElementById('topics');
-    data.topics.forEach(topic => {
-  topicsDiv.innerHTML += `
-    <div class="topic-card">
-      <h2>${topic.id} ${topic.title}</h2>
-      <div class="explanation">${topic.explanation}</div>
-      <h3>Questions</h3>
-      ${topic.questions.map(q => `
-        <div class="q-item">
-          <strong>${q.type} (${q.marks} marks)</strong><br>
-          ${q.question}
-          ${q.solution ? `<details><summary>Solution</summary>${q.solution}</details>` : ''}
-        </div>
-      `).join('')}
-    </div>
-  `;
-});
-  } catch (err) {
-    console.error(err);
-    alert('Failed to load EM-1 content. Check console for details.');
-  }
-}
 
 init();
