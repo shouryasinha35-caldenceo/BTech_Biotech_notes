@@ -1,0 +1,111 @@
+{
+  "subject": "Engineering Mathematics-1",
+  "code": "EM201T",
+  "unit": "Unit I",
+  "title": "Partial Differentiation & Multivariable Calculus",
+  "topics": [
+    {
+      "id": "1.1",
+      "title": "Functions of Several Variables, 3D Geometry & Surfaces",
+      "explanation": "<p>In single-variable calculus you studied \( y = f(x) \). In multivariable calculus a function \( z = f(x, y) \) takes two independent inputs and produces one output.</p><p><strong>Visual analogy:</strong> Your position on the ground is \( (x, y) \) and the height of the terrain at that point is \( z = f(x, y) \). The graph is a 3D surface.</p><p><strong>Domain & Range:</strong> Domain is a region in the \( xy \)-plane. Range is the set of possible \( z \)-values.</p><p><strong>Example:</strong> \( f(x, y) = x^2 + y^2 \) forms a paraboloid. At \( (0,0) \) the value is 0; at \( (1,2) \) the value is 5.</p>",
+      "questions": [
+        {
+          "type": "Practice",
+          "marks": 2,
+          "question": "Describe the surface represented by \( z = x^2 + y^2 \). What is the value at the point \( (1, 2) \)?"
+        },
+        {
+          "type": "Short",
+          "marks": 2,
+          "question": "What is the domain of the function \( f(x, y) = \\sqrt{1 - x^2 - y^2} \)?"
+        }
+      ]
+    },
+    {
+      "id": "1.2",
+      "title": "Limits & Continuity in Higher Dimensions",
+      "explanation": "<p>In 2D limits you approach a point from only left or right. In 3D you can approach \( (a,b) \) along infinitely many paths. A limit exists only if the function approaches the same value along every path.</p><p><strong>Path test to show a limit does not exist:</strong></p><ol><li>Substitute \( y = mx \).</li><li>If the result still depends on \( m \), the limit does not exist.</li></ol><p><strong>Worked example:</strong> \( \\lim_{(x,y)\\to(0,0)} \\frac{xy}{x^2 + y^2} \). Along \( y = mx \) the limit is \( \\frac{m}{1+m^2} \). Different values of \( m \) give different results, so the limit does not exist.</p><p><strong>Continuity of piecewise functions:</strong> At a boundary point, left-hand limit = right-hand limit = function value.</p>",
+      "questions": [
+        {
+          "type": "PYQ",
+          "marks": 5,
+          "question": "Show that \( \\lim_{(x,y)\\to(0,0)} \\frac{xy}{x^2 + y^2} \) does not exist.",
+          "solution": "Along y = mx the limit becomes m/(1+m²), which depends on m. Hence the limit does not exist."
+        },
+        {
+          "type": "PYQ",
+          "marks": 2,
+          "question": "Find A so that \( f(x) = \\begin{cases} A + x & x < 2 \\\\ 1 + x^2 & x \\ge 2 \\end{cases} \) is continuous at x = 2.",
+          "solution": "LHL = A + 2, RHL = 5. Set equal: A = 3."
+        }
+      ]
+    },
+    {
+      "id": "1.3",
+      "title": "Partial Derivatives & Clairaut’s Theorem",
+      "explanation": "<p>When finding \( f_x \), treat y as constant. When finding \( f_y \), treat x as constant.</p><p><strong>Example:</strong> For \( f(x,y) = x^2 + y^2 + x^2 y^2 \)</p><ul><li>\( f_x = 2x + 2x y^2 \)</li><li>\( f_y = 2y + 2x^2 y \)</li></ul><p><strong>Clairaut’s Theorem:</strong> If the second partials are continuous, then \( f_{xy} = f_{yx} \).</p>",
+      "questions": [
+        {
+          "type": "PYQ",
+          "marks": 5,
+          "question": "If \( f(x,y) = x^2 + y^2 + x^2 y^2 \), find all first-order partial derivatives.",
+          "solution": "fx = 2x + 2xy², fy = 2y + 2x²y"
+        },
+        {
+          "type": "Practice",
+          "marks": 3,
+          "question": "Verify Clairaut’s theorem for \( u = \\ln(x^2 + y^2) \)."
+        }
+      ]
+    },
+    {
+      "id": "1.4",
+      "title": "Multivariable Chain Rule & Total Differentials",
+      "explanation": "<p><strong>Single parameter case</strong> (\( x = x(t), y = y(t) \)):</p><p class='formula'>\\( \\frac{dz}{dt} = f_x \\frac{dx}{dt} + f_y \\frac{dy}{dt} \\)</p><p><strong>Two parameter case</strong> (\( x = u+v, y = u-v \)):</p><p>\\( z_u = f_x + f_y \\), \\( z_v = f_x - f_y \\)</p><p><strong>Total differential coefficient under constraint:</strong> Use implicit differentiation to find \( \\frac{dy}{dx} \), then substitute into the total derivative formula.</p>",
+      "questions": [
+        {
+          "type": "PYQ",
+          "marks": 5,
+          "question": "Find the total differential coefficient of \( u = x^2 y \) w.r.t. x where \( x^2 + xy + y^2 = 1 \).",
+          "solution": "du/dx = (3x²y + 4xy² - 2x³)/(x + 2y)"
+        }
+      ]
+    },
+    {
+      "id": "1.5",
+      "title": "Homogeneous Functions & Euler’s Theorem",
+      "explanation": "<p>A function \( f(x,y) \) is homogeneous of degree \( n \) if \( f(tx, ty) = t^n f(x,y) \).</p><p><strong>Euler’s Theorem:</strong> If \( u \) is homogeneous of degree \( n \), then</p><p class='formula'>\\( x u_x + y u_y = n u \\)</p><p>This is a frequently asked proof question (5 marks).</p>",
+      "questions": [
+        {
+          "type": "PYQ",
+          "marks": 5,
+          "question": "State and prove Euler’s theorem on homogeneous functions.",
+          "solution": "Standard proof using u = xⁿ F(y/x) and partial differentiation."
+        },
+        {
+          "type": "Practice",
+          "marks": 3,
+          "question": "Verify Euler’s theorem for \( u = \\frac{x^3 + y^3}{x + y} \)."
+        }
+      ]
+    },
+    {
+      "id": "1.6",
+      "title": "Gradient, Directional Derivatives & Extrema",
+      "explanation": "<p>The gradient of a scalar field \( \\Phi(x,y,z) \) is</p><p class='formula'>\\( \\nabla \\Phi = \\Phi_x \\mathbf{i} + \\Phi_y \\mathbf{j} + \\Phi_z \\mathbf{k} \\)</p><p>Directional derivative in the direction of unit vector \( \\hat{u} \) is \( \\nabla \\Phi \\cdot \\hat{u} \).</p><p>For extrema of \( f(x,y) \), solve \( f_x = 0 \), \( f_y = 0 \) and use the second derivative test with \( \\Delta = f_{xx} f_{yy} - (f_{xy})^2 \).</p>",
+      "questions": [
+        {
+          "type": "PYQ",
+          "marks": 5,
+          "question": "Find the gradient of \( \\Phi = 3x^2 y - y^3 z^2 \) at the point (1, −2, −1).",
+          "solution": "∇Φ = −12i − 9j − 16k"
+        },
+        {
+          "type": "Practice",
+          "marks": 4,
+          "question": "Find the directional derivative of \( f(x,y,z) = xy + yz + zx \) at (1,2,3) in the direction of the vector 2i + 3j + 6k."
+        }
+      ]
+    }
+  ]
+}
