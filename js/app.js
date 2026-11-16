@@ -91,7 +91,7 @@ function openSubject(id) {
 
 async function loadEM1FromJSON() {
   try {
-    const res = await fetch('js/EM1/EM1_Unit1.json');
+  const res = await fetch('js/EM1/EM1_Complete.json');
     if (!res.ok) throw new Error('JSON not found');
     const data = await res.json();
 
